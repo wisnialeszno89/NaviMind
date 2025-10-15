@@ -108,3 +108,18 @@ background: radial-gradient(
 .animate-shine {
   animation: shine 4s linear infinite;
 }
+
+/* === WelcomePage: правки только для PWA fullscreen === */
+@media all and (display-mode: standalone) {
+  /* Центруем и чуть приподнимаем typewriter */
+  .WelcomePage .welcome-typewriter {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    transform: translateY(-16px); /* лёгкий подъём над идеальным центром */
+  }
+
+  /* Поднимаем кнопку над свайп-зоной iPhone */
+  .WelcomePage .pwa-button {
+    margin-bottom: calc(env(safe-area-inset-bottom) + 48px) !important;
+  }
+}

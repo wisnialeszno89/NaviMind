@@ -66,7 +66,7 @@ export default function WelcomePage() {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center gradient-bg"
+      className="WelcomePage fixed inset-0 z-[100] flex flex-col items-center justify-center gradient-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -100,7 +100,7 @@ export default function WelcomePage() {
   </div>
 
   {/* Низ: typewriter */}
-  <div className="min-h-[80px] flex items-center justify-center w-full">
+  <div className="min-h-[80px] flex items-center justify-center w-full welcome-typewriter">
     <AnimatePresence mode="wait">
       <motion.div
         key={qIndex}
@@ -132,7 +132,7 @@ export default function WelcomePage() {
           <button
     type="button"
     onClick={() => router.push("/landing")}
-    className="px-7 py-3 rounded-lg border border-cyan-500 text-base hover:text-white hover:bg-cyan-600 transition animate-pulse-outline"
+    className="px-7 py-3 rounded-lg border border-cyan-500 text-base hover:text-white hover:bg-cyan-600 transition animate-pulse-outline pwa-button"
   >
     Ask NaviMind
   </button>
