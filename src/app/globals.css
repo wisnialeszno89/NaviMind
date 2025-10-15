@@ -123,3 +123,16 @@ background: radial-gradient(
     margin-bottom: calc(env(safe-area-inset-bottom) + 48px) !important;
   }
 }
+
+/* === LoginPage корректировка только для PWA fullscreen === */
+@media all and (display-mode: standalone) {
+  .LoginPage .login-container {
+    justify-content: center !important; /* центрируем по вертикали */
+    min-height: 100vh !important;
+    transform: translateY(-10px); /* лёгкий визуальный сдвиг вверх */
+  }
+
+  .LoginPage footer {
+    margin-bottom: calc(env(safe-area-inset-bottom) + 24px) !important; /* поднимаем футер на ~1 см */
+  }
+}

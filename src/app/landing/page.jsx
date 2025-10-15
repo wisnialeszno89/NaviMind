@@ -145,7 +145,7 @@ forgot: {
 
   return (
     <>
-    <main className="h-dvh md:min-h-screen md:h-auto bg-[#0b1220] text-white flex flex-col md:flex-row font-outfit relative overflow-hidden">
+    <main className="LoginPage h-dvh md:min-h-screen md:h-auto bg-[#0b1220] text-white flex flex-col md:flex-row font-outfit relative overflow-hidden">
        {/* 🔹 Фон со звёздами */}
   <ParticleBackground />
   
@@ -197,7 +197,7 @@ forgot: {
   exit={{ opacity: 0, x: -30 }}
   transition={{ duration: 1.6, ease: "easeOut" }}
         className="w-full md:w-1/2 flex justify-center md:items-center px-6 pt-0 md:p-8 mt-3 md:mt-0 
-                   flex-none md:flex-none overflow-visible pb-8 md:pb-8"
+                  flex-none md:flex-none overflow-visible pb-8 md:pb-8 login-container"
       >
         
           <AnimatePresence mode="wait">
