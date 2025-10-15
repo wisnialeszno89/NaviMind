@@ -111,14 +111,12 @@ background: radial-gradient(
 
 /* === WelcomePage: правки только для PWA fullscreen === */
 @media all and (display-mode: standalone) {
-  /* Центруем и чуть приподнимаем typewriter */
   .WelcomePage .welcome-typewriter {
     margin-top: auto !important;
     margin-bottom: auto !important;
-    transform: translateY(-16px); /* лёгкий подъём над идеальным центром */
+    transform: translateY(-16px);
   }
 
-  /* Поднимаем кнопку над свайп-зоной iPhone */
   .WelcomePage .pwa-button {
     margin-bottom: calc(env(safe-area-inset-bottom) + 48px) !important;
   }
@@ -126,13 +124,20 @@ background: radial-gradient(
 
 /* === LoginPage корректировка только для PWA fullscreen === */
 @media all and (display-mode: standalone) {
+  .LoginPage {
+  justify-content: flex-start !important; 
+  align-items: center !important;
+  min-height: 100vh !important;
+  padding-top: 7vh !important; 
+}
+
   .LoginPage .login-container {
-    justify-content: center !important; /* центрируем по вертикали */
-    min-height: 100vh !important;
-    transform: translateY(-10px); /* лёгкий визуальный сдвиг вверх */
+    transform: translateY(10px);
   }
 
   .LoginPage footer {
-    margin-bottom: calc(env(safe-area-inset-bottom) + 24px) !important; /* поднимаем футер на ~1 см */
+    margin-bottom: calc(env(safe-area-inset-bottom) + 24px) !important;
   }
 }
+
+

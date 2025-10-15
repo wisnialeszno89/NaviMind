@@ -18,17 +18,16 @@ export default function LoginBlock({
   onGoogle = () => {},
 }) {
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        onContinue(e);
-      }}
-      className="
-        relative
-        md:p-0 md:bg-transparent md:shadow-none md:min-h-0 
-        px-4 pt-4 pb-0 bg-[#0b1220] rounded-xl shadow-lg
-      "
-    >
+    <div
+  onSubmit={(e) => {
+    e.preventDefault();
+    onContinue(e);
+  }}
+  className="
+    w-full max-w-xl rounded-xl p-0 bg-transparent 
+     px-4 pt-4 pb-0 bg-transparent rounded-xl shadow-none"
+>
+
       {/* 🔵 Overlay Loader */}
       {isSubmitting && (
   <div className="absolute inset-0 flex items-center justify-center z-50">
@@ -110,7 +109,8 @@ export default function LoginBlock({
 
       {/* Login */}
       <button
-        type="submit"
+        type="button"
+        onClick={onContinue}
         disabled={isSubmitting}
         className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition text-white py-2 rounded mb-3 text-sm font-medium shadow"
       >
@@ -153,6 +153,6 @@ export default function LoginBlock({
         <img src="/google-icon.svg" alt="Google" className="w-5 h-5" />
         Continue with Google
       </button>
-    </form>
+    </div>
   );
 }
