@@ -57,7 +57,7 @@ export default function WelcomeModalMobile({ onClose, onShowTerms, onShowPrivacy
               id="terms"
               checked={checked}
               onChange={(e) => setChecked(e.target.checked)}
-              className="mt-1"
+              className="mt-1 w-6 h-6 min-w-[24px] min-h-[24px] accent-blue-600 cursor-pointer touch-manipulation"
             />
             <label
               htmlFor="terms"

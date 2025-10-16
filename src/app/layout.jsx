@@ -1,6 +1,5 @@
 import "./globals.css";
 import { Outfit } from "next/font/google";
-import { AuthProvider } from "@/context/AuthContext"; 
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -43,13 +42,10 @@ export default function RootLayout({ children }) {
       </head>
 
       <body
-        className={`${outfit.className} bg-[#0b1220] text-white w-full max-w-[100vw] overflow-x-hidden`}
-        style={{ WebkitTapHighlightColor: "transparent" }}
-      >
-        {/* ✅ Оборачиваем всё в AuthProvider */}
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+  className={`${outfit.className} bg-[#0b1220] text-white w-full max-w-[100vw] overflow-x-hidden`}
+  style={{ WebkitTapHighlightColor: "transparent" }}
+>
+        {children}
       </body>
     </html>
   );
