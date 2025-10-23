@@ -21,10 +21,10 @@ export async function createUserChat() {
   if (!user) throw new Error("User not authenticated");
 
   const chatData = {
-    title: "New Chat",
-    createdAt: serverTimestamp(),
-    ownerId: user.uid,
-  };
+  title: "",
+  createdAt: serverTimestamp(),
+  ownerId: user.uid,
+};
 
   const ref = collection(db, "users", user.uid, "chats");
   const docRef = await addDoc(ref, chatData);
@@ -45,10 +45,10 @@ export async function addMessageToChat(chatId, messageContent) {
 
   // ✅ гарантируем существование документа чата (если его ещё нет, создастся)
   await setDoc(
-    chatRef,
-    { ownerId: uid, createdAt: serverTimestamp(), title: "New Chat" },
-    { merge: true }
-  );
+  chatRef,
+  { ownerId: uid, createdAt: serverTimestamp() },
+  { merge: true }
+);
 
   const message = {
     role: "user",

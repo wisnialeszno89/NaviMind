@@ -7,6 +7,7 @@ import ChatArea from "@/components/app/ChatArea";
 import { quickChecks } from "@/data/quickChecks";
 import QuickCheckCard from "@/components/app/QuickCheckCard";
 import { AnimatePresence, motion } from "framer-motion";
+import InstallPrompt from "@/components/common/InstallPrompt";
 
 export default function HomePage() {
   const { messages } = useContext(ChatContext);
@@ -58,30 +59,33 @@ export default function HomePage() {
   return (
     <>
       {/* Карточка показывается, как и раньше, пока нет сообщений */}
-      {messages.length === 0 && current && (
-        <div className="flex items-center justify-center mt-28 px-4 animate-fade-in">
-          <div className="w-full max-w-xl">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={current.text}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.4 }}
-              >
-                <QuickCheckCard
-                  question={current}
-                  // Стрелка — тоже всегда случайный выбор
-                  onNext={() => {
-                    const rnd = pickRandomIndex();
-                    if (rnd !== null) setIndex(rnd);
-                  }}
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-      )}
+     {messages.length === 0 && current && (
+  <div className="flex flex-col items-center justify-center mt-6 px-4 animate-fade-in">
+    <div className="w-full max-w-xl flex flex-col items-center space-y-6">
+      {/* Баннер установки PWA */}
+      <InstallPrompt />
+
+      {/* Quick Check */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current.text}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.4 }}
+        >
+          <QuickCheckCard
+            question={current}
+            onNext={() => {
+              const rnd = pickRandomIndex();
+              if (rnd !== null) setIndex(rnd);
+            }}
+          />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  </div>
+)}
 
       <ChatArea messages={messages} />
     </>

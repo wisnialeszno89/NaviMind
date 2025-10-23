@@ -1,13 +1,13 @@
 "use client";
 
-import { useContext, useState, useRef, useEffect } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ChatContext } from "@/context/ChatContext";
 import ChatOptionsDropdown from "@/components/app/ChatOptionsDropdown";
 import { renameChatInFirestore } from "@/firebase/chatStore";
 import { auth } from "@/firebase/config";
 
-export default function ChatItem({ chat, projId, route, onSidebarItemClick, nested = false }) {
+function ChatItem({ chat, projId, route, onSidebarItemClick, nested = false }) {
   const router = useRouter();
   const {
     activeChatId,
@@ -25,7 +25,9 @@ export default function ChatItem({ chat, projId, route, onSidebarItemClick, nest
 
   const isActive = chat.chatId === activeChatId;
   const isBeingRenamed = renamingId === chat.chatId;
-  const chatTitle = chat.title || "Untitled Chat";
+  const chatTitle = chat.title?.trim()
+  ? chat.title
+  : "";
 
   useEffect(() => {
     const cancel = (e) => {
@@ -65,6 +67,8 @@ export default function ChatItem({ chat, projId, route, onSidebarItemClick, nest
   setRenamingId(null);
 };
 
+if (!chat.title) return null;
+
   return (
     <div
   key={chat.chatId}
@@ -98,7 +102,9 @@ export default function ChatItem({ chat, projId, route, onSidebarItemClick, nest
       }}
       className={`flex flex-1 min-w-0 items-center text-left ${nested ? "pl-[12px]" : ""}`}
     >
-      <span className="truncate block w-full text-[15px]">{chatTitle}</span>
+      <span className="truncate block w-full text-[15px]">
+  {chatTitle || ""}
+</span>
     </button>
   )}
 
@@ -147,3 +153,13 @@ export default function ChatItem({ chat, projId, route, onSidebarItemClick, nest
 </div>
   );
 }
+
+export default React.memo(ChatItem, (prevProps, nextProps) => {
+  // 🔍 проверяем, нужно ли реально перерисовывать
+  return (
+    prevProps.chat.chatId === nextProps.chat.chatId &&
+    prevProps.chat.title === nextProps.chat.title &&
+    prevProps.activeChatId === nextProps.activeChatId
+  );
+});
+

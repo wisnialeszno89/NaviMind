@@ -154,14 +154,13 @@ export default function RegistrationBlock({
                     : "bg-blue-600 hover:bg-blue-700"}`}
       aria-disabled={emailSent}
     >
-      {emailSent ? "Email sent - check your inbox" : "Register"}
+      {emailSent ? "Email sent" : "Register"}
     </button>
 
     {/* Информационное сообщение + действия после отправки */}
     {emailSent && (
   <>
     <p className="text-sm text-gray-300 text-center leading-relaxed mt-2">
-      We’ve sent a verification link to <strong className="text-white">{email}</strong>.<br />
       Please confirm your email and then log in again.
     </p>
 

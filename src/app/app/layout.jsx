@@ -9,6 +9,15 @@ import InputBar from "@/components/app/InputBar/InputBar";
 import WelcomeModal from "@/components/app/Welcome/WelcomeModal";
 import DebugStateBar from "@/components/dev/DebugStateBar";
 
+// 👉 Регистрация Service Worker
+if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((reg) => console.log("✅ [SW] Registered:", reg.scope))
+      .catch((err) => console.error("❌ [SW] Registration failed:", err));
+  });
+}
 
 export default function AppLayout({ children }) {
   return (
