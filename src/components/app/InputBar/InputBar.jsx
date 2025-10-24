@@ -83,33 +83,43 @@ const topicIdFromURL =
   }
 }, [inputText]);
 
+  /* ───────── MOBILE KEYBOARD FIX ───────── */
+  useEffect(() => {
+    const handleResize = () => {
+      document.body.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   /* ───────── HANDLERS ───────── */
  const handleSend = async () => {
   if (!inputValue.trim()) return;
 
-  // ✅ если мы на странице топика — тут реальный topicId
   const topicId = topicIdFromURL || null;
   const inTopic = Boolean(topicId);
-
   let chatId = activeChatId;
 
   try {
-    // 1) если чата ещё нет — создаём там, где находимся (топик/глобал)
+    const message = inputValue;
+    setInputValue(""); 
+    setIsActive(false);
+
     if (!chatId) {
       if (inTopic) {
-        // --- ЧАТ ВНУТРИ ТОПИКА ---
         const created = await createChatForTopic({
           uid: currentUser?.uid,
           topicId,
-          messageText: inputValue,
+          messageText: message,
         });
 
         chatId = created.chatId;
-        setActiveProject(topicId);    // фиксируем активный топик
+        setActiveProject(topicId);
         setActiveChatId(chatId);
 
-        // подтянем createdAt из Firestore
         const docRef = doc(
           db,
           "users",
@@ -125,11 +135,10 @@ const topicIdFromURL =
         const newChatObj = {
           chatId,
           createdAt: data?.createdAt?.toMillis?.() ?? Date.now(),
-          messages: [{ role: "user", content: inputValue }],
-          title: inputValue.slice(0, 30),
+          messages: [{ role: "user", content: message }],
+          title: message.slice(0, 30),
         };
 
-        // кладём локально строго под topicId (с анти-дубликатом)
         setProjectChatSessions((prev) => {
           const updated = { ...prev };
           const arr = updated[topicId] || [];
@@ -137,14 +146,13 @@ const topicIdFromURL =
           return updated;
         });
       } else {
-        // --- ГЛОБАЛЬНЫЙ ЧАТ ---
         const created = await createChatGlobal({
           uid: currentUser?.uid,
-          messageText: inputValue,
+          messageText: message,
         });
 
         chatId = created.chatId;
-        setActiveProject(null);       // выходим из топика на всякий случай
+        setActiveProject(null);
         setActiveChatId(chatId);
 
         const docRef = doc(db, "users", currentUser.uid, "chats", chatId);
@@ -154,8 +162,8 @@ const topicIdFromURL =
         const newChatObj = {
           chatId,
           createdAt: data?.createdAt?.toMillis?.() ?? Date.now(),
-          messages: [{ role: "user", content: inputValue }],
-          title: inputValue.slice(0, 30),
+          messages: [{ role: "user", content: message }],
+          title: message.slice(0, 30),
         };
 
         setProjectChatSessions((prev) => {
@@ -167,15 +175,11 @@ const topicIdFromURL =
       }
     }
 
-    // 2) добавляем сообщение строго по текущему контексту
     if (inTopic) {
-      await addMessageToTopicChat(topicId, chatId, inputValue);
+      await addMessageToTopicChat(topicId, chatId, message);
     } else {
-      await addMessageToGlobalChat(chatId, inputValue);
+      await addMessageToGlobalChat(chatId, message);
     }
-
-    setInputValue("");
-    setIsActive(false);
   } catch (err) {
     console.error("[InputBar.handleSend] error:", {
       message: err?.message || String(err),
@@ -240,7 +244,11 @@ const topicIdFromURL =
     setInputValue(e.target.value);
     if (e.target.value.trim()) setIsActive(true);
   }}
-  onFocus={() => setIsActive(true)}
+  onFocus={(e) => {
+  setIsActive(true);
+  // iOS PWA focus boost
+  setTimeout(() => e.target.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
+}}
   onBlur={() => {
     if (!inputValue.trim()) setIsActive(false);
   }}

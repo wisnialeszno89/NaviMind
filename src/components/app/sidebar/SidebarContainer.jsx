@@ -73,9 +73,7 @@ useEffect(() => {
     document.removeEventListener("touchmove", onMove);
     document.removeEventListener("touchend", onEnd);
   };
-  // зависимостей не нужно — используем refs и текущие значения
 }, [mobileMode]); 
-
 
   const handleCloseSidebar = toggleSidebar || ui.toggleSidebar;
 

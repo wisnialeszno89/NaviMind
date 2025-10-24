@@ -4,12 +4,21 @@ import { createContext, useState, useEffect } from "react";
 export const UIContext = createContext();
 
 export function UIProvider({ children }) {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [isLogoutOpen, setLogoutOpen] = useState(false);
   const [theme, setTheme] = useState("light");
   const [language, setLanguage] = useState("EN");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isSidebarOpen, setSidebarOpen] = useState(() => {
+  // если уже есть сохранённое значение — читаем его
+  if (typeof window !== "undefined") {
+    const saved = localStorage.getItem("sidebarOpen");
+    if (saved !== null) return saved === "true";
+    // если нет сохранённого — по ширине экрана
+    return window.innerWidth > 900; // десктоп открыт, мобилка закрыта
+  }
+  return true;
+});
 
     // ✅ Отслеживаем fullscreen (PWA или F11)
  useEffect(() => {
@@ -50,13 +59,6 @@ export function UIProvider({ children }) {
 
   // 🔹 Новый inputText и setter
   const [inputText, setInputText] = useState("");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("sidebarOpen");
-    if (saved !== null) {
-      setSidebarOpen(saved === "false");
-    }
-  }, []);
 
   useEffect(() => {
     localStorage.setItem("sidebarOpen", isSidebarOpen);

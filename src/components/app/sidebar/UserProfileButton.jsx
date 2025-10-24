@@ -3,11 +3,7 @@
 import { useState, useRef, useContext, useEffect } from "react";
 import UserMenuDropdown from "@/components/app/UserMenuDropdown";
 import { UIContext } from "@/context/UIContext";
-
-// ✅ Firebase (только auth для запасных полей)
 import { auth } from "@/firebase/config";
-
-// ✅ Наш безопасный хук: слушает ТОЛЬКО users/{uid} и ловит ошибки
 import { useCurrentUserDoc } from "@/hooks/useCurrentUserDoc";
 
 const MOBILE_BREAKPOINT = 900;
@@ -102,6 +98,7 @@ export default function UserAvatar() {
   transition-colors duration-200 min-h-[38px]
 "
       >
+
         {/* Фото из Google/профиля или иконка */}
 {profile.photoURL ? (
   <img

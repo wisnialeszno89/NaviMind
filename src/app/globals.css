@@ -140,4 +140,23 @@ background: radial-gradient(
   }
 }
 
+/* Prevent iOS cursor jump during parent animation */
+textarea {
+  transform: translateZ(0);
+  will-change: auto;
+}
 
+/* Mobile keyboard height fix — keeps InputBar above keyboard */
+:root {
+  --vh: 1vh;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --vh: 1dvh;
+  }
+}
+
+body {
+  height: calc(var(--vh) * 100);
+}
