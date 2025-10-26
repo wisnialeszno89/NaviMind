@@ -15,8 +15,10 @@ export default function ChatArea({ messages, children }) {
   };
 
   useEffect(() => {
-    if (hasMessages) scrollToBottom();
-  }, [messages]);
+  if (hasMessages) {
+    setTimeout(scrollToBottom, 50);
+  }
+}, [messages]);
 
   useEffect(() => {
     const ref = mainRef.current;
@@ -37,17 +39,18 @@ export default function ChatArea({ messages, children }) {
       <main
         ref={mainRef}
         className={`
-          w-full flex flex-col items-center justify-end
+          w-full flex flex-col items-center
           ${hasMessages
             ? "flex-1 pt-2 px-4 pb-14 overflow-y-auto custom-scroll"
             : "px-4 overflow-hidden"}
         `}
       >
         {hasMessages ? (
-          <div className="w-full max-w-4xl flex flex-col gap-2 mt-auto">
+          <div className="w-full max-w-4xl flex flex-col gap-2">
   {messages.map((msg, idx) => (
     <ChatMessage key={idx} message={msg} />
   ))}
+  <div ref={messagesEndRef} />
 </div>
         ) : (
           children

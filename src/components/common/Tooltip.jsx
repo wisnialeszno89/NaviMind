@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
-// Задай тот же брейкпоинт, что и для мобилки/оверлея Sidebar
-const MOBILE_BREAKPOINT = 900; // например, 850 или 900px — смотри по проекту
+const MOBILE_BREAKPOINT = 900; 
 
 export default function Tooltip({ children, content, position = "top" }) {
   const [isCompact, setIsCompact] = useState(false);

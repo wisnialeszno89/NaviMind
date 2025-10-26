@@ -6,6 +6,10 @@ import { deleteChatFromFirestore } from "@/firebase/chatStore";
 import { auth } from "@/firebase/config";
 import { exportChatAsTxt } from "@/utils/exportChatAsTxt";
 import { getChatMessages } from "@/firebase/chatStore";
+import { togglePinChat } from "@/firebase/chatStore";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase/config";
+
 
 // Мобайл‑детектор
 function useIsMobile() {
@@ -33,6 +37,7 @@ export default function ChatOptionsDropdown({
   const isMobile = useIsMobile();
   const [coords, setCoords] = useState({ top: 0, left: 0 });
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [isPinned, setIsPinned] = useState(false);
 
   useEffect(() => {
     if (!isOpen || !targetRef?.current) return;
@@ -105,6 +110,24 @@ export default function ChatOptionsDropdown({
     }
   };
 
+  useEffect(() => {
+  const fetchPinState = async () => {
+    const user = auth.currentUser;
+    if (!user || !chatId) return;
+    try {
+      const chatRef = doc(db, "users", user.uid, "chats", chatId);
+      const snap = await getDoc(chatRef);
+      if (snap.exists()) {
+        setIsPinned(!!snap.data().isPinned);
+      }
+    } catch (err) {
+      console.error("Failed to load pin state:", err);
+    }
+  };
+
+  if (isOpen) fetchPinState();
+}, [isOpen, chatId]);
+
   return (
     <>
       {isOpen && !confirmOpen &&
@@ -120,6 +143,25 @@ export default function ChatOptionsDropdown({
             }}
             className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg ring-1 ring-slate-700 p-1 text-sm transition"
           >
+
+<button
+  onClick={async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    const newState = await togglePinChat(user.uid, chatId);
+    setIsPinned(newState);
+    onClose();
+  }}
+  className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-100 hover:bg-slate-700/80 dark:hover:bg-slate-700 transition"
+>
+  <img
+    src={isPinned ? "/Unpin.svg" : "/Pin.svg"}
+    alt={isPinned ? "Unpin" : "Pin"}
+    className="w-5 h-5 opacity-80"
+  />
+  <span>{isPinned ? "Unpin" : "Pin"}</span>
+</button>
+
             <button
   onClick={async () => {
     const user = auth.currentUser;

@@ -31,9 +31,13 @@ export default function ChatListSection({ onSidebarItemClick }) {
       ? v
       : v?.toMillis?.() ?? v?.seconds * 1000 ?? 0;
 
-  const globalChats = unique.sort(
-    (a, b) => toMillis(b.createdAt) - toMillis(a.createdAt)
-  );
+  // ✅ Сортировка: сначала pinned, потом по дате создания
+const globalChats = unique.sort((a, b) => {
+  if (a.isPinned === b.isPinned) {
+    return toMillis(b.createdAt) - toMillis(a.createdAt);
+  }
+  return a.isPinned ? -1 : 1; // pinned чаты вверх
+});
 
   if (!globalChats.length) return null;
 

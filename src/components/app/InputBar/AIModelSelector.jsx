@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 
 const MODEL_LABELS = {
-  gpt: "ChatGPT 4o",
-  gemini: "Gemini 1.5 Pro",
+  gpt: "ChatGPT 5",
+  gemini: "Gemini 2.5",
 };
 
 export default function AIModelSelector({ onChange }) {

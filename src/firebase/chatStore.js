@@ -5,6 +5,7 @@ import {
   addDoc,
   serverTimestamp,
   getDocs,
+  getDoc,
   onSnapshot,
   query,
   orderBy,
@@ -112,6 +113,27 @@ export async function renameChatInFirestore(uid, chatId, newTitle) {
     console.log("✏️ Chat renamed in Firestore");
   } catch (error) {
     console.error("❌ Failed to rename chat:", error);
+  }
+}
+
+export async function togglePinChat(uid, chatId) {
+  try {
+    const chatRef = doc(db, "users", uid, "chats", chatId);
+    const snapshot = await getDoc(chatRef);
+
+    if (!snapshot.exists()) {
+      console.warn("⚠️ Chat not found:", chatId);
+      return;
+    }
+
+    const current = snapshot.data().isPinned || false;
+    await updateDoc(chatRef, { isPinned: !current });
+
+    console.log(`📌 Chat ${chatId} ${!current ? "pinned" : "unpinned"} successfully`);
+    return !current;
+  } catch (error) {
+    console.error("❌ Failed to toggle pin state:", error);
+    throw error;
   }
 }
 
