@@ -1,18 +1,12 @@
 import ChatWindow from "@/app/chat/components/ChatWindow";
 
-type Props = {
-  params: {
-    threadId: string;
-  };
-};
-
-export default function Page({ params }: Props) {
+export default function Page({ params }: { params: { threadId: string } }) {
   return (
     <div className="h-full">
       <ChatWindow
         threadId={params.threadId}
-        mode="default"
         onRefresh={() => {}}
+        mode="normal"
       />
     </div>
   );
