@@ -6,3 +6,6 @@
 html, body {
   height: 100%;
 }
+/* opcjonalnie - wygładzenie dymków */
+.message-assistant { border-radius: 14px; }
+.message-user { border-radius: 14px; }

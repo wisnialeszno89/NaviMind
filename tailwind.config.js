@@ -1,9 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/app/**/*.{js,jsx,ts,tsx}",
-    "./src/components/**/*.{js,jsx,ts,tsx}",
-    "./src/context/**/*.{js,jsx,ts,tsx}",
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
@@ -12,8 +11,8 @@ module.exports = {
       },
       keyframes: {
         'pulse-slow': {
-          '0%, 100%': { transform: 'scale(1)', backgroundColor: 'rgb(37 99 235)' }, // blue-600
-          '50%': { transform: 'scale(1.05)', backgroundColor: 'rgb(59 130 246)' }, // blue-500
+          '0%, 100%': { transform: 'scale(1)', backgroundColor: 'rgb(37 99 235)' }, 
+          '50%': { transform: 'scale(1.05)', backgroundColor: 'rgb(59 130 246)' }, 
         },
       },
       animation: {
